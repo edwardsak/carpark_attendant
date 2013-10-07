@@ -46,6 +46,9 @@ public class ChargeActivity extends Activity {
 	private EditText txtLotNo;
 	private EditText txtCarRegNo;
 	
+	private String _tranCode;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +58,8 @@ public class ChargeActivity extends Activity {
 		btnScan.setEnabled(false);
 		txtLotNo = (EditText)findViewById(R.id.txtLotNo);
 		txtCarRegNo = (EditText)findViewById(R.id.txtCarRegNo);
+		
+		_tranCode = "";
 		
 		// set device type to cm390
 		uhfService.setDeviceType(0);
@@ -460,7 +465,7 @@ public class ChargeActivity extends Activity {
 						txtCarRegNo.setText("");
 						
 						Intent intent = new Intent(ChargeActivity.this, PrintActivity.class);
-						intent.putExtra("tranCode", "XYZ");
+						intent.putExtra("tranCode", _tranCode);
 						startActivity(intent);
 					}
 				});
@@ -492,6 +497,8 @@ public class ChargeActivity extends Activity {
 				boolean returnStatus = jsonObj.getBoolean("returnStatus");
 				if (returnStatus) {
 					Log.d(TAG, "Save ok.");
+					
+					_tranCode = jsonObj.getString("tranCode");
 					
 				} else {
 					String returnMessage = jsonObj.getString("returnMessage");
